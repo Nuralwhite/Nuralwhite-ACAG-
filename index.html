@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nuralwhite – Autonomous Multi-Agent Intelligence</title>
+  <meta name="description" content="Nuralwhite: The first voice-enabled, self-improving multi-agent AI platform. Hybrid local/cloud execution, real debate between models, and built-in creative reasoning."/>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --orb-base: #3b82f6;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --primary: #60a5fa;
+      --primary-dark: #3b82f6;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --orb-base: #60a5fa;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.5s, color 0.5s;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: relative;
+      height: 100vh;
+      min-height: 720px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      overflow: hidden;
+    }
+
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      padding: 2rem;
+    }
+
+    h1 {
+      font-size: clamp(3.5rem, 9vw, 6rem);
+      font-weight: 800;
+      letter-spacing: -2px;
+      margin-bottom: 1rem;
+      text-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+
+    .tagline {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      max-width: 800px;
+      margin: 0 auto 2.5rem;
+      opacity: 0.9;
+      min-height: 3.5rem;
+      white-space: pre-wrap;
+    }
+
+    .typed-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: var(--primary);
+      animation: blink 0.8s infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn, .github-star {
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 12px 30px rgba(59,130,246,0.4);
+    }
+
+    .btn-outline {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    .github-star {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .github-star:hover {
+      background: rgba(255,255,255,0.3);
+      transform: translateY(-2px);
+    }
+
+    .star-count {
+      margin-left: 0.6rem;
+      font-weight: 700;
+    }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+    section { padding: 8rem 0; }
+    h2 { font-size: 3rem; text-align: center; margin-bottom: 3.5rem; color: var(--primary); }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .feature {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 2.5rem;
+      border: 1px solid var(--border);
+      transition: all 0.4s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      cursor: pointer;
+    }
+
+    .feature.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .feature:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+    }
+
+    .feature h3 { font-size: 1.6rem; margin-bottom: 1rem; color: var(--primary); }
+
+    .cta {
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      padding: 7rem 2rem;
+      border-radius: 24px;
+      margin: 5rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 5rem 0 3rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+
+    .theme-toggle, .fullscreen-toggle {
+      position: fixed;
+      top: 1.5rem;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      padding: 0.9rem;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.3rem;
+      z-index: 1000;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle { right: 1.5rem; }
+    .fullscreen-toggle { right: 5rem; }
+
+    [data-theme="dark"] .theme-toggle, [data-theme="dark"] .fullscreen-toggle {
+      background: rgba(0,0,0,0.4);
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 3rem; }
+      h2 { font-size: 2.4rem; }
+      header { min-height: 80vh; padding: 6rem 1.5rem 4rem; }
+      .fullscreen-toggle { right: 4.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
+  <button class="fullscreen-toggle" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">⛶</button>
+
+  <header>
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <h1>Nuralwhite</h1>
+      <p class="tagline" id="typed-tagline"></p>
+
+      <div class="btn-group">
+        <a href="https://github.com/Nuralwhite/Nuralwhite-ACAG-" target="_blank" class="btn btn-primary">View on GitHub</a>
+        <div id="github-star-btn" class="github-star">
+          <span>Star</span>
+          <span id="star-count" class="star-count">...</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- rest of your content (features, cta, footer) remains the same -->
+  <!-- ... paste your existing features, cta, footer sections here ... -->
+
+  <script>
+    // Loading fade-out
+    setTimeout(() => {
+      document.getElementById('loading').classList.add('hidden');
+    }, 1500);
+
+    // Dark mode
+    function toggleTheme() {
+      const html = document.documentElement;
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    }
+
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    // Typing effect
+    const taglineEl = document.getElementById('typed-tagline');
+    const text = "The first autonomous multi-agent intelligence platform.\nVoice-enabled. Hybrid local/cloud. Self-improving through collective reasoning.";
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        taglineEl.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 40);
+      }
+    }
+    setTimeout(typeWriter, 800);
+
+    // GitHub Stars live + animated count
+    fetch('https://api.github.com/repos/Nuralwhite/Nuralwhite-ACAG-')
+      .then(res => res.json())
+      .then(data => {
+        const count = data.stargazers_count || 0;
+        const el = document.getElementById('star-count');
+        let startVal = 0;
+        const duration = 1800;
+        const step = t => {
+          const progress = t - startTime;
+          el.textContent = Math.floor(progress / duration * count);
+          if (progress < duration) requestAnimationFrame(step);
+          else el.textContent = count;
+        };
+        const startTime = performance.now();
+        requestAnimationFrame(step);
+      })
+      .catch(() => {
+        document.getElementById('star-count').textContent = 'Star';
+      });
+
+    // Three.js: Multiple orbs (different shapes/colors/speeds) + particles + mouse follow + click explosion + scroll reaction
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 8;
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById('hero-canvas'),
+      alpha: true,
+      antialias: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Mouse
+    let mouse = new THREE.Vector2();
+    document.addEventListener('mousemove', e => {
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    // Scroll reaction
+    let scrollY = 0;
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY / window.innerHeight;
+    });
+
+    // Click explosion
+    const explosionParticles = [];
+    document.addEventListener('click', e => {
+      const x = (e.clientX / window.innerWidth) * 2 - 1;
+      const y = -(e.clientY / window.innerHeight) * 2 + 1;
+      const color = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+      for (let i = 0; i < 40; i++) {
+        const geo = new THREE.SphereGeometry(0.07, 8, 8);
+        const mat = new THREE.MeshBasicMaterial({ color: color });
+        const p = new THREE.Mesh(geo, mat);
+        p.position.set(x * 6, y * 6, 0);
+        p.velocity = new THREE.Vector3(
+          (Math.random() - 0.5) * 0.5,
+          (Math.random() - 0.5) * 0.5,
+          (Math.random() - 0.5) * 0.5
+        );
+        scene.add(p);
+        explosionParticles.push(p);
+      }
+    });
+
+    // Orbs with different shapes
+    const orbs = [];
+    const shapes = ['sphere', 'torus', 'icosahedron'];
+    const colors = [0x3b82f6, 0x8b5cf6, 0xec4899, 0xf59e0b, 0x10b981, 0xef4444, 0x06b6d4, 0xd946ef];
+
+    for (let i = 0; i < 10; i++) {
+      let geo;
+      const type = shapes[i % shapes.length];
+      if (type === 'torus') geo = new THREE.TorusGeometry(0.9 + Math.random()*0.5, 0.35, 16, 100);
+      else if (type === 'icosahedron') geo = new THREE.IcosahedronGeometry(1 + Math.random()*0.6, 1);
+      else geo = new THREE.SphereGeometry(0.8 + Math.random()*0.7, 28, 28);
+
+      const mat = new THREE.MeshPhongMaterial({
+        color: colors[i % colors.length],
+        emissive: colors[i % colors.length],
+        emissiveIntensity: 0.6,
+        shininess: 90,
+        transparent: true,
+        opacity: 0.72
+      });
+
+      const orb = new THREE.Mesh(geo, mat);
+      orb.position.set(
+        (Math.random()-0.5)*12,
+        (Math.random()-0.5)*12,
+        (Math.random()-0.5)*6
+      );
+      orb.userData = {
+        rotSpeed: 0.002 + Math.random()*0.009,
+        posSpeed: 0.0004 + Math.random()*0.0012,
+        phase: Math.random()*Math.PI*2,
+        shape: type
+      };
+      scene.add(orb);
+      orbs.push(orb);
+    }
+
+    // Particle background
+    const pCount = 200;
+    const pGeo = new THREE.BufferGeometry();
+    const pPos = new Float32Array(pCount * 3);
+    for (let i = 0; i < pCount * 3; i++) pPos[i] = (Math.random()-0.5)*25;
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+
+    const pMat = new THREE.PointsMaterial({
+      size: 0.07,
+      color: 0x3b82f6,
+      transparent: true,
+      opacity: 0.45,
+      blending: THREE.AdditiveBlending
+    });
+    const particles = new THREE.Points(pGeo, pMat);
+    scene.add(particles);
+
+    // Lights
+    scene.add(new THREE.AmbientLight(0x404040, 0.9));
+    const l1 = new THREE.PointLight(0xffffff, 2.5, 60);
+    l1.position.set(6,6,6); scene.add(l1);
+    const l2 = new THREE.PointLight(0xffffff, 1.8, 60);
+    l2.position.set(-6,-6,6); scene.add(l2);
+
+    // Animation
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Mouse follow
+      orbs.forEach(orb => {
+        orb.position.x += (mouse.x * 5 - orb.position.x) * 0.015;
+        orb.position.y += (mouse.y * 5 - orb.position.y) * 0.015;
+
+        orb.rotation.x += orb.userData.rotSpeed * (1 + scrollY*0.5);
+        orb.rotation.y += orb.userData.rotSpeed * 1.4 * (1 + scrollY*0.3);
+      });
+
+      // Scroll reaction
+      particles.rotation.y += 0.0002 + scrollY * 0.0008;
+
+      // Explosion particles decay
+      explosionParticles.forEach((p,i) => {
+        p.position.add(p.velocity);
+        p.scale.multiplyScalar(0.97);
+        if (p.scale.x < 0.01) {
+          scene.remove(p);
+          explosionParticles.splice(i, 1);
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Hover sound (subtle hum)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let osc = null;
+    let gainNode = null;
+
+    function startHum() {
+      if (osc) return;
+      osc = audioCtx.createOscillator();
+      gainNode = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(80, audioCtx.currentTime); // low hum
+      gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+    }
+
+    function stopHum() {
+      if (osc) {
+        gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+        osc.stop(audioCtx.currentTime + 0.3);
+        osc = null;
+      }
+    }
+
+    // Volume control slider (optional UI)
+    const volumeSlider = document.createElement('input');
+    volumeSlider.type = 'range';
+    volumeSlider.min = 0;
+    volumeSlider.max = 100;
+    volumeSlider.value = 8;
+    volumeSlider.style.position = 'fixed';
+    volumeSlider.style.bottom = '20px';
+    volumeSlider.style.right = '20px';
+    volumeSlider.style.zIndex = '1001';
+    document.body.appendChild(volumeSlider);
+
+    volumeSlider.addEventListener('input', () => {
+      if (gainNode) gainNode.gain.value = volumeSlider.value / 1000;
+    });
+
+    document.querySelectorAll('.btn, .feature, .theme-toggle, .fullscreen-toggle').forEach(el => {
+      el.addEventListener('mouseenter', startHum);
+      el.addEventListener('mouseleave', stopHum);
+    });
+
+    // Fullscreen toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => console.log(err));
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>
