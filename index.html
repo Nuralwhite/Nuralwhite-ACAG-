@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nuralwhite – Autonomous Multi-Agent Intelligence</title>
   <meta name="description" content="Nuralwhite: The first voice-enabled, self-improving multi-agent AI platform. Hybrid local/cloud execution, real debate between models, and built-in creative reasoning."/>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Three.js CDN -->
+  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
   <style>
@@ -22,7 +22,6 @@
       --primary-dark: #2563eb;
       --card-bg: #ffffff;
       --border: #e2e8f0;
-      --orb-base: #3b82f6;
     }
 
     [data-theme="dark"] {
@@ -33,7 +32,6 @@
       --primary-dark: #3b82f6;
       --card-bg: #1e293b;
       --border: #334155;
-      --orb-base: #60a5fa;
     }
 
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -42,7 +40,6 @@
       background: var(--bg);
       color: var(--text);
       transition: background 0.5s, color 0.5s;
-      overflow-x: hidden;
     }
 
     header {
@@ -76,7 +73,6 @@
       font-weight: 800;
       letter-spacing: -2px;
       margin-bottom: 1rem;
-      text-shadow: 0 8px 32px rgba(0,0,0,0.5);
     }
 
     .tagline {
@@ -97,10 +93,7 @@
       vertical-align: middle;
     }
 
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0; }
-    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
     .btn-group {
       display: flex;
@@ -109,7 +102,7 @@
       flex-wrap: wrap;
     }
 
-    .btn, .github-star {
+    .btn {
       padding: 1rem 2.5rem;
       border-radius: 50px;
       font-weight: 600;
@@ -117,8 +110,6 @@
       transition: all 0.3s ease;
       font-size: 1.1rem;
       cursor: pointer;
-      position: relative;
-      overflow: hidden;
     }
 
     .btn-primary {
@@ -128,23 +119,19 @@
 
     .btn-primary:hover {
       background: var(--primary-dark);
+      transform: translateY(-3px);
       box-shadow: 0 12px 30px rgba(59,130,246,0.4);
-    }
-
-    .btn-outline {
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: white;
     }
 
     .github-star {
       display: inline-flex;
       align-items: center;
       background: rgba(255,255,255,0.15);
+      padding: 0.7rem 1.4rem;
+      border-radius: 50px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
     }
 
     .github-star:hover {
@@ -155,6 +142,15 @@
     .star-count {
       margin-left: 0.6rem;
       font-weight: 700;
+    }
+
+    .volume-slider {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1001;
+      width: 180px;
+      accent-color: var(--primary);
     }
 
     .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
@@ -175,7 +171,6 @@
       transition: all 0.4s ease;
       opacity: 0;
       transform: translateY(30px);
-      cursor: pointer;
     }
 
     .feature.visible {
@@ -184,7 +179,7 @@
     }
 
     .feature:hover {
-      transform: translateY(-10px) scale(1.03);
+      transform: translateY(-10px);
       box-shadow: 0 25px 50px rgba(0,0,0,0.12);
     }
 
@@ -217,7 +212,6 @@
       cursor: pointer;
       font-size: 1.3rem;
       z-index: 1000;
-      transition: all 0.3s;
     }
 
     .theme-toggle { right: 1.5rem; }
@@ -226,24 +220,12 @@
     [data-theme="dark"] .theme-toggle, [data-theme="dark"] .fullscreen-toggle {
       background: rgba(0,0,0,0.4);
     }
-
-    @media (max-width: 768px) {
-      h1 { font-size: 3rem; }
-      h2 { font-size: 2.4rem; }
-      header { min-height: 80vh; padding: 6rem 1.5rem 4rem; }
-      .fullscreen-toggle { right: 4.5rem; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Loading -->
-  <div class="loading" id="loading">
-    <div class="spinner"></div>
-  </div>
-
   <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
-  <button class="fullscreen-toggle" onclick="toggleFullscreen()" aria-label="Toggle fullscreen">⛶</button>
+  <button class="fullscreen-toggle" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
 
   <header>
     <canvas id="hero-canvas"></canvas>
@@ -255,21 +237,42 @@
         <a href="https://github.com/Nuralwhite/Nuralwhite-ACAG-" target="_blank" class="btn btn-primary">View on GitHub</a>
         <div id="github-star-btn" class="github-star">
           <span>Star</span>
-          <span id="star-count" class="star-count">...</span>
+          <span id="star-count" class="star-count">0</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- rest of your content (features, cta, footer) remains the same -->
-  <!-- ... paste your existing features, cta, footer sections here ... -->
+  <!-- Features Section -->
+  <section class="container">
+    <h2>Why Nuralwhite is Different</h2>
+    <div class="features">
+      <div class="feature"><h3>Real Multi-Model Debate</h3><p>Different AI architectures argue and refine answers in real time.</p></div>
+      <div class="feature"><h3>Hybrid Local ↔ Cloud</h3><p>100% offline with Ollama/LM Studio. Instant cloud escalation.</p></div>
+      <div class="feature"><h3>Self-Evolution Loop</h3><p>Logs interactions to improve routing and fine-tune models over time.</p></div>
+      <div class="feature"><h3>Voice-First Design</h3><p>Speak → multi-agent reasoning → spoken answer.</p></div>
+      <div class="feature"><h3>Creative & Spatial Tools</h3><p>5D motion, music theory, RL training playground.</p></div>
+      <div class="feature"><h3>Open & Extensible</h3><p>MIT license. Easy to extend with new agents and tools.</p></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta container">
+    <h2>Experience Collective Intelligence</h2>
+    <p>Join the first platform where AIs think together and get smarter together.</p>
+    <div class="btn-group">
+      <a href="https://github.com/Nuralwhite/Nuralwhite-ACAG-" target="_blank" class="btn btn-primary">Get Started on GitHub</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Nuralwhite Team • Made in Lucknow, Uttar Pradesh • MIT Licensed</p>
+  </footer>
+
+  <!-- Volume Slider -->
+  <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="15" title="Hover Sound Volume">
 
   <script>
-    // Loading fade-out
-    setTimeout(() => {
-      document.getElementById('loading').classList.add('hidden');
-    }, 1500);
-
     // Dark mode
     function toggleTheme() {
       const html = document.documentElement;
@@ -277,12 +280,8 @@
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
     }
-
     const saved = localStorage.getItem('theme');
     if (saved) document.documentElement.setAttribute('data-theme', saved);
-    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
 
     // Typing effect
     const taglineEl = document.getElementById('typed-tagline');
@@ -297,31 +296,30 @@
     }
     setTimeout(typeWriter, 800);
 
-    // GitHub Stars live + animated count
-    fetch('https://api.github.com/repos/Nuralwhite/Nuralwhite-ACAG-')
+    // GitHub Star Count (fixed with User-Agent)
+    fetch('https://api.github.com/repos/Nuralwhite/Nuralwhite-ACAG-', {
+      headers: { 'User-Agent': 'Nuralwhite-Website' }
+    })
       .then(res => res.json())
       .then(data => {
         const count = data.stargazers_count || 0;
         const el = document.getElementById('star-count');
-        let startVal = 0;
+        let start = 0;
         const duration = 1800;
-        const step = t => {
-          const progress = t - startTime;
-          el.textContent = Math.floor(progress / duration * count);
-          if (progress < duration) requestAnimationFrame(step);
-          else el.textContent = count;
+        const step = (timestamp) => {
+          if (!start) start = timestamp;
+          const progress = Math.min((timestamp - start) / duration, 1);
+          el.textContent = Math.floor(progress * count);
+          if (progress < 1) requestAnimationFrame(step);
         };
-        const startTime = performance.now();
         requestAnimationFrame(step);
       })
       .catch(() => {
         document.getElementById('star-count').textContent = 'Star';
       });
 
-    // Three.js: Multiple orbs (different shapes/colors/speeds) + particles + mouse follow + click explosion + scroll reaction
+    // Three.js Scene
     const scene = new THREE.Scene();
-    scene.background = null;
-
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 8;
 
@@ -332,6 +330,7 @@
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -347,115 +346,89 @@
 
     // Scroll reaction
     let scrollY = 0;
-    window.addEventListener('scroll', () => {
-      scrollY = window.scrollY / window.innerHeight;
-    });
+    window.addEventListener('scroll', () => scrollY = window.scrollY / 800);
 
     // Click explosion
-    const explosionParticles = [];
+    const explosions = [];
     document.addEventListener('click', e => {
       const x = (e.clientX / window.innerWidth) * 2 - 1;
       const y = -(e.clientY / window.innerHeight) * 2 + 1;
       const color = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-      for (let i = 0; i < 40; i++) {
+      for (let i = 0; i < 35; i++) {
         const geo = new THREE.SphereGeometry(0.07, 8, 8);
         const mat = new THREE.MeshBasicMaterial({ color: color });
         const p = new THREE.Mesh(geo, mat);
-        p.position.set(x * 6, y * 6, 0);
+        p.position.set(x*6, y*6, 0);
         p.velocity = new THREE.Vector3(
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5
+          (Math.random()-0.5)*0.6,
+          (Math.random()-0.5)*0.6,
+          (Math.random()-0.5)*0.6
         );
         scene.add(p);
-        explosionParticles.push(p);
+        explosions.push(p);
       }
     });
 
-    // Orbs with different shapes
+    // Multiple orbs
     const orbs = [];
-    const shapes = ['sphere', 'torus', 'icosahedron'];
-    const colors = [0x3b82f6, 0x8b5cf6, 0xec4899, 0xf59e0b, 0x10b981, 0xef4444, 0x06b6d4, 0xd946ef];
-
-    for (let i = 0; i < 10; i++) {
+    const colors = [0x3b82f6, 0x8b5cf6, 0xec4899, 0xf59e0b, 0x10b981, 0xef4444];
+    for (let i = 0; i < 9; i++) {
       let geo;
-      const type = shapes[i % shapes.length];
-      if (type === 'torus') geo = new THREE.TorusGeometry(0.9 + Math.random()*0.5, 0.35, 16, 100);
-      else if (type === 'icosahedron') geo = new THREE.IcosahedronGeometry(1 + Math.random()*0.6, 1);
-      else geo = new THREE.SphereGeometry(0.8 + Math.random()*0.7, 28, 28);
+      if (i % 3 === 0) geo = new THREE.SphereGeometry(0.9, 24, 24);
+      else if (i % 3 === 1) geo = new THREE.TorusGeometry(1.1, 0.4, 16, 80);
+      else geo = new THREE.IcosahedronGeometry(1.0, 1);
 
       const mat = new THREE.MeshPhongMaterial({
         color: colors[i % colors.length],
         emissive: colors[i % colors.length],
-        emissiveIntensity: 0.6,
+        emissiveIntensity: 0.5,
         shininess: 90,
         transparent: true,
-        opacity: 0.72
+        opacity: 0.75
       });
-
       const orb = new THREE.Mesh(geo, mat);
-      orb.position.set(
-        (Math.random()-0.5)*12,
-        (Math.random()-0.5)*12,
-        (Math.random()-0.5)*6
-      );
-      orb.userData = {
-        rotSpeed: 0.002 + Math.random()*0.009,
-        posSpeed: 0.0004 + Math.random()*0.0012,
-        phase: Math.random()*Math.PI*2,
-        shape: type
-      };
+      orb.position.set((Math.random()-0.5)*12, (Math.random()-0.5)*12, (Math.random()-0.5)*5);
+      orb.userData = { rotSpeed: 0.004 + Math.random()*0.008 };
       scene.add(orb);
       orbs.push(orb);
     }
 
     // Particle background
-    const pCount = 200;
+    const pCount = 180;
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
-    for (let i = 0; i < pCount * 3; i++) pPos[i] = (Math.random()-0.5)*25;
+    for (let i = 0; i < pCount*3; i++) pPos[i] = (Math.random()-0.5)*22;
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-
-    const pMat = new THREE.PointsMaterial({
-      size: 0.07,
-      color: 0x3b82f6,
-      transparent: true,
-      opacity: 0.45,
-      blending: THREE.AdditiveBlending
-    });
+    const pMat = new THREE.PointsMaterial({ size: 0.06, color: 0x3b82f6, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
 
     // Lights
     scene.add(new THREE.AmbientLight(0x404040, 0.9));
-    const l1 = new THREE.PointLight(0xffffff, 2.5, 60);
-    l1.position.set(6,6,6); scene.add(l1);
-    const l2 = new THREE.PointLight(0xffffff, 1.8, 60);
-    l2.position.set(-6,-6,6); scene.add(l2);
+    const l1 = new THREE.PointLight(0xffffff, 2.5, 60); l1.position.set(6,6,6); scene.add(l1);
+    const l2 = new THREE.PointLight(0xffffff, 1.8, 60); l2.position.set(-6,-6,6); scene.add(l2);
 
     // Animation
     function animate() {
       requestAnimationFrame(animate);
 
-      // Mouse follow
-      orbs.forEach(orb => {
-        orb.position.x += (mouse.x * 5 - orb.position.x) * 0.015;
-        orb.position.y += (mouse.y * 5 - orb.position.y) * 0.015;
+      orbs.forEach((orb, i) => {
+        orb.rotation.x += orb.userData.rotSpeed * (1 + scrollY*0.6);
+        orb.rotation.y += orb.userData.rotSpeed * 1.3;
 
-        orb.rotation.x += orb.userData.rotSpeed * (1 + scrollY*0.5);
-        orb.rotation.y += orb.userData.rotSpeed * 1.4 * (1 + scrollY*0.3);
+        orb.position.x += (mouse.x * 5 - orb.position.x) * 0.018;
+        orb.position.y += (mouse.y * 5 - orb.position.y) * 0.018;
       });
 
-      // Scroll reaction
-      particles.rotation.y += 0.0002 + scrollY * 0.0008;
+      particles.rotation.y += 0.0003 + scrollY * 0.001;
 
-      // Explosion particles decay
-      explosionParticles.forEach((p,i) => {
+      // Explosion decay
+      explosions.forEach((p, i) => {
         p.position.add(p.velocity);
-        p.scale.multiplyScalar(0.97);
+        p.scale.multiplyScalar(0.96);
         if (p.scale.x < 0.01) {
           scene.remove(p);
-          explosionParticles.splice(i, 1);
+          explosions.splice(i, 1);
         }
       });
 
@@ -463,57 +436,53 @@
     }
     animate();
 
-    // Hover sound (subtle hum)
+    // Hover sound with volume control
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    let osc = null;
+    let oscillator = null;
     let gainNode = null;
 
-    function startHum() {
-      if (osc) return;
-      osc = audioCtx.createOscillator();
+    function startHoverSound() {
+      if (oscillator) return;
+      oscillator = audioCtx.createOscillator();
       gainNode = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(80, audioCtx.currentTime); // low hum
-      gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      osc.connect(gainNode);
+      oscillator.type = 'sine';
+      oscillator.frequency.value = 85;
+      gainNode.gain.value = 0.12;
+      oscillator.connect(gainNode);
       gainNode.connect(audioCtx.destination);
-      osc.start();
+      oscillator.start();
     }
 
-    function stopHum() {
-      if (osc) {
-        gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
-        osc.stop(audioCtx.currentTime + 0.3);
-        osc = null;
+    function stopHoverSound() {
+      if (oscillator) {
+        gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
+        oscillator.stop(audioCtx.currentTime + 0.4);
+        oscillator = null;
       }
     }
 
-    // Volume control slider (optional UI)
     const volumeSlider = document.createElement('input');
     volumeSlider.type = 'range';
-    volumeSlider.min = 0;
-    volumeSlider.max = 100;
-    volumeSlider.value = 8;
-    volumeSlider.style.position = 'fixed';
-    volumeSlider.style.bottom = '20px';
-    volumeSlider.style.right = '20px';
-    volumeSlider.style.zIndex = '1001';
+    volumeSlider.min = '0';
+    volumeSlider.max = '100';
+    volumeSlider.value = '12';
+    volumeSlider.className = 'volume-slider';
     document.body.appendChild(volumeSlider);
 
     volumeSlider.addEventListener('input', () => {
-      if (gainNode) gainNode.gain.value = volumeSlider.value / 1000;
+      if (gainNode) gainNode.gain.value = volumeSlider.value / 800;
     });
 
-    document.querySelectorAll('.btn, .feature, .theme-toggle, .fullscreen-toggle').forEach(el => {
-      el.addEventListener('mouseenter', startHum);
-      el.addEventListener('mouseleave', stopHum);
+    document.querySelectorAll('.btn, .feature').forEach(el => {
+      el.addEventListener('mouseenter', startHoverSound);
+      el.addEventListener('mouseleave', stopHoverSound);
     });
 
     // Fullscreen toggle
     function toggleFullscreen() {
       if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => console.log(err));
-      } else if (document.exitFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else {
         document.exitFullscreen();
       }
     }
