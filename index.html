@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <meta name="google-site-verification" content="rrxHrk0vRqMoWXWt7JmF5VqC3i5Q9XdxJRypKETbLh0" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nuralwhite – Autonomous Multi-Agent Intelligence</title>
@@ -8,50 +9,37 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
 
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --primary: #3b82f6;
-      --primary-dark: #2563eb;
-      --card-bg: #ffffff;
-      --border: #e2e8f0;
-    }
-
-    [data-theme="dark"] {
-      --bg: #0f172a;
+      --bg: #0a0e17;
       --text: #e2e8f0;
-      --text-muted: #94a3b8;
+      --muted: #94a3b8;
       --primary: #60a5fa;
       --primary-dark: #3b82f6;
-      --card-bg: #1e293b;
+      --card: #1e293b;
       --border: #334155;
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
+      margin: 0;
       font-family: 'Inter', system-ui, sans-serif;
       background: var(--bg);
       color: var(--text);
-      transition: background 0.5s, color 0.5s;
+      line-height: 1.6;
     }
 
     header {
       position: relative;
       height: 100vh;
-      min-height: 720px;
+      min-height: 680px;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      color: white;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
       overflow: hidden;
     }
 
@@ -69,28 +57,30 @@
     }
 
     h1 {
-      font-size: clamp(3.5rem, 9vw, 6rem);
+      font-size: clamp(3.8rem, 10vw, 7rem);
       font-weight: 800;
-      letter-spacing: -2px;
-      margin-bottom: 1rem;
+      letter-spacing: -3px;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(90deg, #60a5fa, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .tagline {
       font-size: clamp(1.4rem, 4vw, 2rem);
-      max-width: 800px;
-      margin: 0 auto 2.5rem;
-      opacity: 0.9;
-      min-height: 3.5rem;
+      max-width: 820px;
+      margin: 0 auto 2.8rem;
+      color: #cbd5e1;
+      min-height: 4.5rem;
       white-space: pre-wrap;
     }
 
     .typed-cursor {
       display: inline-block;
-      width: 2px;
+      width: 3px;
       height: 1.2em;
       background: var(--primary);
-      animation: blink 0.8s infinite;
-      vertical-align: middle;
+      animation: blink 0.7s infinite;
     }
 
     @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
@@ -103,8 +93,8 @@
     }
 
     .btn {
-      padding: 1rem 2.5rem;
-      border-radius: 50px;
+      padding: 1rem 2.8rem;
+      border-radius: 9999px;
       font-weight: 600;
       text-decoration: none;
       transition: all 0.3s ease;
@@ -119,58 +109,45 @@
 
     .btn-primary:hover {
       background: var(--primary-dark);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba(59,130,246,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 35px rgba(96,165,250,0.4);
     }
 
     .github-star {
       display: inline-flex;
       align-items: center;
-      background: rgba(255,255,255,0.15);
-      padding: 0.7rem 1.4rem;
-      border-radius: 50px;
+      background: rgba(255,255,255,0.08);
+      padding: 0.9rem 1.8rem;
+      border-radius: 9999px;
       color: white;
-      text-decoration: none;
       font-weight: 600;
     }
 
     .github-star:hover {
-      background: rgba(255,255,255,0.3);
-      transform: translateY(-2px);
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-3px);
     }
 
-    .star-count {
-      margin-left: 0.6rem;
-      font-weight: 700;
-    }
+    .star-count { margin-left: 10px; font-weight: 700; }
 
-    .volume-slider {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1001;
-      width: 180px;
-      accent-color: var(--primary);
-    }
-
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
-    section { padding: 8rem 0; }
-    h2 { font-size: 3rem; text-align: center; margin-bottom: 3.5rem; color: var(--primary); }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+    section { padding: 10rem 0; }
+    h2 { font-size: 3.2rem; text-align: center; margin-bottom: 4rem; color: var(--primary); font-weight: 700; }
 
     .features {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
       gap: 2.5rem;
     }
 
     .feature {
-      background: var(--card-bg);
-      border-radius: 16px;
-      padding: 2.5rem;
+      background: var(--card);
+      border-radius: 20px;
+      padding: 2.8rem;
       border: 1px solid var(--border);
       transition: all 0.4s ease;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px);
     }
 
     .feature.visible {
@@ -179,59 +156,43 @@
     }
 
     .feature:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.12);
+      transform: translateY(-12px);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.2);
     }
 
-    .feature h3 { font-size: 1.6rem; margin-bottom: 1rem; color: var(--primary); }
-
-    .cta {
-      text-align: center;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 7rem 2rem;
-      border-radius: 24px;
-      margin: 5rem 0;
-    }
+    .feature h3 { font-size: 1.7rem; margin-bottom: 1.2rem; color: var(--primary); }
 
     footer {
       text-align: center;
-      padding: 5rem 0 3rem;
-      color: var(--text-muted);
+      padding: 6rem 0 4rem;
+      color: var(--muted);
       border-top: 1px solid var(--border);
     }
 
-    .theme-toggle, .fullscreen-toggle {
+    .theme-toggle {
       position: fixed;
-      top: 1.5rem;
-      background: rgba(255,255,255,0.15);
+      top: 30px;
+      right: 30px;
+      background: rgba(255,255,255,0.1);
       border: none;
       color: white;
-      padding: 0.9rem;
+      padding: 16px;
       border-radius: 50%;
       cursor: pointer;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       z-index: 1000;
-    }
-
-    .theme-toggle { right: 1.5rem; }
-    .fullscreen-toggle { right: 5rem; }
-
-    [data-theme="dark"] .theme-toggle, [data-theme="dark"] .fullscreen-toggle {
-      background: rgba(0,0,0,0.4);
     }
   </style>
 </head>
 <body>
 
   <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">🌙</button>
-  <button class="fullscreen-toggle" onclick="toggleFullscreen()" aria-label="Fullscreen">⛶</button>
 
   <header>
     <canvas id="hero-canvas"></canvas>
     <div class="hero-content">
       <h1>Nuralwhite</h1>
-      <p class="tagline" id="typed-tagline"></p>
+      <p class="tagline" id="typed-tagline">The first autonomous multi-agent intelligence platform.<br>Voice-enabled. Hybrid local/cloud. Self-improving through collective reasoning.</p>
 
       <div class="btn-group">
         <a href="https://github.com/Nuralwhite/Nuralwhite-ACAG-" target="_blank" class="btn btn-primary">View on GitHub</a>
@@ -243,34 +204,21 @@
     </div>
   </header>
 
-  <!-- Features Section -->
   <section class="container">
     <h2>Why Nuralwhite is Different</h2>
     <div class="features">
-      <div class="feature"><h3>Real Multi-Model Debate</h3><p>Different AI architectures argue and refine answers in real time.</p></div>
-      <div class="feature"><h3>Hybrid Local ↔ Cloud</h3><p>100% offline with Ollama/LM Studio. Instant cloud escalation.</p></div>
-      <div class="feature"><h3>Self-Evolution Loop</h3><p>Logs interactions to improve routing and fine-tune models over time.</p></div>
-      <div class="feature"><h3>Voice-First Design</h3><p>Speak → multi-agent reasoning → spoken answer.</p></div>
-      <div class="feature"><h3>Creative & Spatial Tools</h3><p>5D motion, music theory, RL training playground.</p></div>
-      <div class="feature"><h3>Open & Extensible</h3><p>MIT license. Easy to extend with new agents and tools.</p></div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section class="cta container">
-    <h2>Experience Collective Intelligence</h2>
-    <p>Join the first platform where AIs think together and get smarter together.</p>
-    <div class="btn-group">
-      <a href="https://github.com/Nuralwhite/Nuralwhite-ACAG-" target="_blank" class="btn btn-primary">Get Started on GitHub</a>
+      <div class="feature"><h3>Real Multi-Model Debate</h3><p>Different AI architectures argue, critique, and refine answers in real time.</p></div>
+      <div class="feature"><h3>Hybrid Local ↔ Cloud</h3><p>Run completely offline or instantly escalate to powerful cloud models.</p></div>
+      <div class="feature"><h3>Self-Evolution Loop</h3><p>Every interaction improves routing and model performance over time.</p></div>
+      <div class="feature"><h3>Voice-First Experience</h3><p>Speak naturally — get spoken answers with full multi-agent reasoning.</p></div>
+      <div class="feature"><h3>Creative Intelligence</h3><p>Built-in 5D motion, music theory, and RL simulation tools.</p></div>
+      <div class="feature"><h3>Open & Extensible</h3><p>MIT licensed. Built for the community to grow and improve.</p></div>
     </div>
   </section>
 
   <footer>
-    <p>© 2026 Nuralwhite Team • Made in Lucknow, Uttar Pradesh • MIT Licensed</p>
+    <p>© 2026 Nuralwhite • MIT License</p>
   </footer>
-
-  <!-- Volume Slider -->
-  <input type="range" id="volume-slider" class="volume-slider" min="0" max="100" value="15" title="Hover Sound Volume">
 
   <script>
     // Dark mode
@@ -280,54 +228,53 @@
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
     }
-    const saved = localStorage.getItem('theme');
-    if (saved) document.documentElement.setAttribute('data-theme', saved);
 
-    // Typing effect
+    // Typing animation (fixed & visible)
     const taglineEl = document.getElementById('typed-tagline');
-    const text = "The first autonomous multi-agent intelligence platform.\nVoice-enabled. Hybrid local/cloud. Self-improving through collective reasoning.";
-    let i = 0;
-    function typeWriter() {
-      if (i < text.length) {
-        taglineEl.innerHTML += text.charAt(i) === '\n' ? '<br>' : text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 40);
+    const fullText = "The first autonomous multi-agent intelligence platform.\nVoice-enabled. Hybrid local/cloud. Self-improving through collective reasoning.";
+    let charIndex = 0;
+
+    function typeChar() {
+      if (charIndex < fullText.length) {
+        const ch = fullText[charIndex];
+        taglineEl.innerHTML += ch === '\n' ? '<br>' : ch;
+        charIndex++;
+        setTimeout(typeChar, 35);
       }
     }
-    setTimeout(typeWriter, 800);
+    setTimeout(() => {
+      taglineEl.innerHTML = '';
+      typeChar();
+    }, 400);
 
-    // GitHub Star Count (fixed with User-Agent)
+    // GitHub star count (fixed)
     fetch('https://api.github.com/repos/Nuralwhite/Nuralwhite-ACAG-', {
       headers: { 'User-Agent': 'Nuralwhite-Website' }
     })
-      .then(res => res.json())
-      .then(data => {
-        const count = data.stargazers_count || 0;
-        const el = document.getElementById('star-count');
-        let start = 0;
-        const duration = 1800;
-        const step = (timestamp) => {
-          if (!start) start = timestamp;
-          const progress = Math.min((timestamp - start) / duration, 1);
-          el.textContent = Math.floor(progress * count);
-          if (progress < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-      })
-      .catch(() => {
-        document.getElementById('star-count').textContent = 'Star';
-      });
+    .then(r => r.json())
+    .then(data => {
+      const count = data.stargazers_count || 0;
+      const el = document.getElementById('star-count');
+      let current = 0;
+      const interval = setInterval(() => {
+        current += Math.ceil(count / 25);
+        el.textContent = current;
+        if (current >= count) {
+          el.textContent = count;
+          clearInterval(interval);
+        }
+      }, 60);
+    })
+    .catch(() => {
+      document.getElementById('star-count').textContent = 'Star';
+    });
 
-    // Three.js Scene
+    // Full Three.js (multiple orbs + particles + mouse + click explosion + scroll reaction)
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 8;
 
-    const renderer = new THREE.WebGLRenderer({
-      canvas: document.getElementById('hero-canvas'),
-      alpha: true,
-      antialias: true
-    });
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('hero-canvas'), alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
 
@@ -337,14 +284,12 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // Mouse
-    let mouse = new THREE.Vector2();
+    let mouseX = 0, mouseY = 0;
     document.addEventListener('mousemove', e => {
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
     });
 
-    // Scroll reaction
     let scrollY = 0;
     window.addEventListener('scroll', () => scrollY = window.scrollY / 800);
 
@@ -359,19 +304,15 @@
         const mat = new THREE.MeshBasicMaterial({ color: color });
         const p = new THREE.Mesh(geo, mat);
         p.position.set(x*6, y*6, 0);
-        p.velocity = new THREE.Vector3(
-          (Math.random()-0.5)*0.6,
-          (Math.random()-0.5)*0.6,
-          (Math.random()-0.5)*0.6
-        );
+        p.velocity = new THREE.Vector3((Math.random()-0.5)*0.6, (Math.random()-0.5)*0.6, (Math.random()-0.5)*0.6);
         scene.add(p);
         explosions.push(p);
       }
     });
 
-    // Multiple orbs
+    // Orbs
     const orbs = [];
-    const colors = [0x3b82f6, 0x8b5cf6, 0xec4899, 0xf59e0b, 0x10b981, 0xef4444];
+    const colors = [0x60a5fa, 0xa5b4fc, 0xc084fc, 0xf472b6, 0xfb923c];
     for (let i = 0; i < 9; i++) {
       let geo;
       if (i % 3 === 0) geo = new THREE.SphereGeometry(0.9, 24, 24);
@@ -382,7 +323,6 @@
         color: colors[i % colors.length],
         emissive: colors[i % colors.length],
         emissiveIntensity: 0.5,
-        shininess: 90,
         transparent: true,
         opacity: 0.75
       });
@@ -393,13 +333,13 @@
       orbs.push(orb);
     }
 
-    // Particle background
+    // Particles
     const pCount = 180;
     const pGeo = new THREE.BufferGeometry();
     const pPos = new Float32Array(pCount * 3);
     for (let i = 0; i < pCount*3; i++) pPos[i] = (Math.random()-0.5)*22;
     pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
-    const pMat = new THREE.PointsMaterial({ size: 0.06, color: 0x3b82f6, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending });
+    const pMat = new THREE.PointsMaterial({ size: 0.06, color: 0x60a5fa, transparent: true, opacity: 0.45, blending: THREE.AdditiveBlending });
     const particles = new THREE.Points(pGeo, pMat);
     scene.add(particles);
 
@@ -408,21 +348,18 @@
     const l1 = new THREE.PointLight(0xffffff, 2.5, 60); l1.position.set(6,6,6); scene.add(l1);
     const l2 = new THREE.PointLight(0xffffff, 1.8, 60); l2.position.set(-6,-6,6); scene.add(l2);
 
-    // Animation
     function animate() {
       requestAnimationFrame(animate);
 
-      orbs.forEach((orb, i) => {
+      orbs.forEach(orb => {
+        orb.position.x += (mouseX * 5 - orb.position.x) * 0.018;
+        orb.position.y += (mouseY * 5 - orb.position.y) * 0.018;
         orb.rotation.x += orb.userData.rotSpeed * (1 + scrollY*0.6);
         orb.rotation.y += orb.userData.rotSpeed * 1.3;
-
-        orb.position.x += (mouse.x * 5 - orb.position.x) * 0.018;
-        orb.position.y += (mouse.y * 5 - orb.position.y) * 0.018;
       });
 
       particles.rotation.y += 0.0003 + scrollY * 0.001;
 
-      // Explosion decay
       explosions.forEach((p, i) => {
         p.position.add(p.velocity);
         p.scale.multiplyScalar(0.96);
@@ -435,57 +372,6 @@
       renderer.render(scene, camera);
     }
     animate();
-
-    // Hover sound with volume control
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    let oscillator = null;
-    let gainNode = null;
-
-    function startHoverSound() {
-      if (oscillator) return;
-      oscillator = audioCtx.createOscillator();
-      gainNode = audioCtx.createGain();
-      oscillator.type = 'sine';
-      oscillator.frequency.value = 85;
-      gainNode.gain.value = 0.12;
-      oscillator.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      oscillator.start();
-    }
-
-    function stopHoverSound() {
-      if (oscillator) {
-        gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.4);
-        oscillator.stop(audioCtx.currentTime + 0.4);
-        oscillator = null;
-      }
-    }
-
-    const volumeSlider = document.createElement('input');
-    volumeSlider.type = 'range';
-    volumeSlider.min = '0';
-    volumeSlider.max = '100';
-    volumeSlider.value = '12';
-    volumeSlider.className = 'volume-slider';
-    document.body.appendChild(volumeSlider);
-
-    volumeSlider.addEventListener('input', () => {
-      if (gainNode) gainNode.gain.value = volumeSlider.value / 800;
-    });
-
-    document.querySelectorAll('.btn, .feature').forEach(el => {
-      el.addEventListener('mouseenter', startHoverSound);
-      el.addEventListener('mouseleave', stopHoverSound);
-    });
-
-    // Fullscreen toggle
-    function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-      } else {
-        document.exitFullscreen();
-      }
-    }
   </script>
 </body>
 </html>
